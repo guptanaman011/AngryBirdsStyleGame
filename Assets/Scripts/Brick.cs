@@ -9,7 +9,7 @@ public class Brick : MonoBehaviour
     {
         if (col.gameObject.GetComponent<Rigidbody2D>() == null) return;
 
-        float damage = col.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude * 10;
+        float damage = col.gameObject.GetComponent<Rigidbody2D>().linearVelocity.magnitude * 10;
         //don't play audio for small damages
         if (damage >= 10)
             GetComponent<AudioSource>().Play();

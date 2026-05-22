@@ -26,7 +26,7 @@ public class Bird : MonoBehaviour
         //if we've thrown the bird
         //and its speed is very small
         if (State == BirdState.Thrown &&
-            GetComponent<Rigidbody2D>().velocity.sqrMagnitude <= Constants.MinVelocity)
+            GetComponent<Rigidbody2D>().linearVelocity.sqrMagnitude <= Constants.MinVelocity)
         {
             //destroy the bird after 2 seconds
             StartCoroutine(DestroyAfter(2));

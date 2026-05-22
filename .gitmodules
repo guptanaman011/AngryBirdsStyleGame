@@ -1,0 +1,3 @@
+[submodule "Packages/com.guptanaman.ad-mediation"]
+	path = Packages/com.guptanaman.ad-mediation
+	url = https://github.com/guptanaman011/unity-ad-mediation-sdk.git

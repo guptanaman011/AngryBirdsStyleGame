@@ -26,7 +26,7 @@ public class Pig : MonoBehaviour
         else //we're hit by something else
         {
             //calculate the damage via the hit object velocity
-            float damage = col.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude * 10;
+            float damage = col.gameObject.GetComponent<Rigidbody2D>().linearVelocity.magnitude * 10;
             Health -= damage;
             //don't play sound for small damage
             if (damage >= 10)

@@ -142,7 +142,7 @@ public class SlingShot : MonoBehaviour
         //BirdToThrow.GetComponent<Rigidbody2D>().AddForce
         //    (new Vector2(v2.x, v2.y) * ThrowSpeed * distance * 300 * Time.deltaTime);
         //set the velocity
-        BirdToThrow.GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y) * ThrowSpeed * distance;
+        BirdToThrow.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(velocity.x, velocity.y) * ThrowSpeed * distance;
 
 
         //notify interested parties that the bird was thrown
@@ -208,7 +208,7 @@ public class SlingShot : MonoBehaviour
             segments[i] = segments[0] + segVelocity * time2 + 0.5f * Physics2D.gravity * Mathf.Pow(time2, 2);
         }
 
-        TrajectoryLineRenderer.SetVertexCount(segmentCount);
+        TrajectoryLineRenderer.positionCount = segmentCount;
         for (int i = 0; i < segmentCount; i++)
             TrajectoryLineRenderer.SetPosition(i, segments[i]);
     }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using Assets.Scripts;
 using System.Linq;
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Debug.Log("[Ads/Game] Start: AdManager.EnsureExists() (GAM interstitial + GAM banner)");
+        AdManager.EnsureExists();
         CurrentGameState = GameState.Start;
         slingshot.enabled = false;
         //find all relevant game objects
@@ -67,7 +70,7 @@ public class GameManager : MonoBehaviour
             case GameState.Lost:
                 if (Input.GetMouseButtonUp(0))
                 {
-                    Application.LoadLevel(Application.loadedLevel);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 }
                 break;
             default:
@@ -103,19 +106,24 @@ public class GameManager : MonoBehaviour
                             if (AllPigsDestroyed())
                             {
                                 CurrentGameState = GameState.Won;
+                                Debug.Log("[Ads/Game] Camera settle → state=Won → TryShowInterstitial (no callback)");
+                                AdManager.TryShowInterstitial();
                             }
-                            //animate the next bird, if available
                             else if (currentBirdIndex == Birds.Count - 1)
                             {
-                                //no more birds, go to finished
                                 CurrentGameState = GameState.Lost;
+                                Debug.Log("[Ads/Game] Camera settle → state=Lost (last bird) → TryShowInterstitial (no callback)");
+                                AdManager.TryShowInterstitial();
                             }
                             else
                             {
-                                slingshot.slingshotState = SlingshotState.Idle;
-                                //bird to throw is the next on the list
-                                currentBirdIndex++;
-                                AnimateBirdToSlingshot();
+                                Debug.Log("[Ads/Game] Camera settle → more birds left (birdIndex=" + currentBirdIndex + "/" + (Birds.Count - 1) + ") → TryShowInterstitial (with continue)");
+                                AdManager.TryShowInterstitial(() =>
+                                {
+                                    slingshot.slingshotState = SlingshotState.Idle;
+                                    currentBirdIndex++;
+                                    AnimateBirdToSlingshot();
+                                });
                             }
                         });
     }
@@ -157,7 +165,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var item in Bricks.Union(Birds).Union(Pigs))
         {
-            if (item != null && item.GetComponent<Rigidbody2D>().velocity.sqrMagnitude > Constants.MinVelocity)
+            if (item != null && item.GetComponent<Rigidbody2D>().linearVelocity.sqrMagnitude > Constants.MinVelocity)
             {
                 return false;
             }
