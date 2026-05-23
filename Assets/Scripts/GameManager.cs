@@ -20,8 +20,15 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log("[Ads/Game] Start: AdManager.EnsureExists() (GAM interstitial + GAM banner)");
-        AdManager.EnsureExists();
+        Debug.Log("[Ads/Game] Start: AdManager.Initialize(...) — LP + GAM, interstitial + rewarded");
+        AdManager.Initialize(new AdMediationConfig
+        {
+            LevelPlayAppKey                = "261156b35",
+            LevelPlayInterstitialAdUnitId  = "zdli2jjv632391kt",
+            LevelPlayRewardedAdUnitId      = "",                       // supply when you have a real rewarded unit
+            GamInterstitialAdUnitId        = "/22887195694/Test_Int",
+            GamRewardedAdUnitId            = "",                       // supply when you have a real GAM rewarded path
+        });
         CurrentGameState = GameState.Start;
         slingshot.enabled = false;
         //find all relevant game objects
